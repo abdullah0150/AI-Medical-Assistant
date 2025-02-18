@@ -16,7 +16,7 @@ class QuestionRequest(BaseModel):
 class Workflow:
     def __init__(self):
         self.graph_builder = StateGraph(State)
-        self.graph_builder.add_node("generate_answer", generate_answer)
+        self.graph_builder.add_node("question_answer", question_answer)
 
         self.graph_builder.add_conditional_edges(
             START,
