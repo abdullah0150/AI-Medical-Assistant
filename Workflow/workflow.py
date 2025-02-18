@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
-from Workflow.utils.nodes import classify_user_intent, generate_answer, question_answer, write_and_execute_query
+from Workflow.utils.nodes import classify_user_intent, question_answer
 from Workflow.utils.state import State
 
 # Initialize FastAPI app
@@ -16,22 +16,17 @@ class QuestionRequest(BaseModel):
 class Workflow:
     def __init__(self):
         self.graph_builder = StateGraph(State)
-        self.graph_builder.add_node("question_answer", question_answer)
-        self.graph_builder.add_node("write_and_execute_query", write_and_execute_query)
         self.graph_builder.add_node("generate_answer", generate_answer)
 
         self.graph_builder.add_conditional_edges(
             START,
             classify_user_intent,
             {
-                "query_related": "write_and_execute_query",
                 "medical_related": "question_answer"
             }
         )
 
         self.graph_builder.add_edge("question_answer", END)
-        self.graph_builder.add_edge("generate_answer", END)
-        self.graph_builder.add_edge("write_and_execute_query", "generate_answer")
 
         self.memory = MemorySaver()
         self.graph = self.graph_builder.compile(checkpointer=self.memory)
