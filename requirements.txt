@@ -1,0 +1,16 @@
+# Python 3.12.4
+
+langchain==0.3.14
+langchain_google_genai==2.0.9
+langchain_community==0.3.14
+langchain_core==0.3.29
+langsmith==0.2.10
+langgraph==0.2.62
+pandas==2.2.3
+uvicorn==0.34.0
+matplotlib==3.10.0
+streamlit==1.41.1
+python-dotenv==1.0.1
+pyodbc==5.2.0
+faiss-cpu
+langchain-cli[inmem]
